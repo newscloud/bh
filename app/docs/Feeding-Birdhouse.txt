@@ -1,0 +1,102 @@
+Feeding Birdhouse
+=================
+
+Here's how Birdhouse collects its data. If you have any questions, please post them at https://groups.google.com/forum/#!forum/lookahead_io.
+
+Incoming Tweets
+------------------------
+
+1) The Stream API. Must be run as an always on background process. Works only with one account configured by screen_name in twitter.ini file.
+
+For example:
+twitter_stream = true
+twitter_stream_name = "reifman"
+
+2) The REST API
+Uses the count, max_id, since_id paging model.
+
+A) Recent incoming tweets
+
+DaemonController -> Index brings in recent Tweets across all accounts.
+
+B) Retrieve historical tweets
+
+Create an Action to retrieve historical tweets for a specific account.
+
+DaemonController -> Index calls processAction on a regular basis.
+
+3) Deleting Older Tweets
+
+DaemonController -> Index calls Tweet::deleteByAccount to gradually purge any older messages. Note: Twitter API has a bug that may leave you with incorrect twitter counts.
+
+4) Delete All Tweets in an Account
+
+Create an Action to delete the entire history of tweets for a specific account
+
+Mentions
+------------------------
+Uses the count, max_id, since_id paging model. Can only retrieve 800 tweets.
+
+1) Recent mentions
+
+DaemonController -> Index calls Mention->sync to get most recent
+
+2) Retrieve historical mentions
+
+Create an Action to retrieve full history of mentions (up to Twitter max of 800)
+
+Favorites
+------------------------
+Uses the count, max_id, since_id paging model. Can only retrieve 800 tweets.
+
+1) Recent favorites
+
+DaemonController -> Index calls Favorite->sync to get most recent
+
+2) Historical Favorites 
+
+Create an Action to retrieve historical tweets for a specific account.
+
+3) Archiving to Pocket
+
+DaemonController - Index alternately calls Favorite archiveAccounts to progressively archive favorites to Pocket
+
+Friends
+------------------------
+Uses the count, cursor model. 
+
+1) DaemonController -> Daily calls Friend->sync to get all, subject to rate limits
+
+2) Create an Action to retrieve full Friend history
+
+Followers
+------------------------
+Uses the count, cursor model. 
+
+1) DaemonController -> Daily calls Follower->sync to get all, subject to rate limits
+
+2) Create an Action to retrieve full Follower history
+
+User Profiles
+------------------------
+
+1) Hydrate Placeholder Profiles
+
+- DaemonController -> Hourly hydrates placeholders
+
+2) Update Stale Profiles (older than a week)
+
+- DaemonController -> Hourly refreshes profiles
+
+Lists
+------------------------
+DaemonController -> Hourly calls TwitterList->sync to get all lists owned by each account
+
+- Action - Retrieve all lists
+
+List Memberships
+------------------------
+Uses cursor model. lists/members.
+
+- Action to retrieve list members for a list
+

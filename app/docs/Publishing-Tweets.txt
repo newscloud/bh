@@ -1,0 +1,37 @@
+Publishing Tweets
+=================
+
+Post Now
+-----------------
+- posts immediately
+
+Scheduled Tweets
+-----------------
+Daemon controller -> index reviews processes status queue
+
+1) Post at a Scheduled Time
+------------------------
+- post time
+
+2) Recurring Tweets
+------------------------
+- next post time
+- Interval
+- Randomizing interval
+- Number of recurrences, 0 is ongoing
+- Stage of recurrence
+
+3) Echo Tweets
+- Randomizing interval +/- up to 1 hr
+- Stage of echoing
+- Echo pattern
+> Initial Reach
+- immediately, 3 hrs, 6 hrs, 12 hrs, 18 hrs, 24 hrs, 36 hrs, 48 hrs, 72 hrs
+> Week reach
+- immediately, 6 hrs, 18 hrs, 1d, 2d, 4d, 7d 
+> Month Reach
+- immediately, 1d, 4d, 7d, 10d, 15d, 20d, 30d
+
+
+
+
